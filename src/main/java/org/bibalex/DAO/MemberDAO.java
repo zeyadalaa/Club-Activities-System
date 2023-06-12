@@ -42,17 +42,20 @@ public class MemberDAO {
 	        String skillName= resultSet.getString("skill_name");
 	        Integer  activityId = resultSet.getInt("activity_id");
 	        String activityName= resultSet.getString("activity_name");
+	        String activityDescription= resultSet.getString("description");
+	        Integer  activityMinAge = resultSet.getInt("min_age");
+	        Integer  activityMaxAge = resultSet.getInt("max_age");
 	        if(hashMap.containsKey(memberId)) {
 	        	Member newMember = hashMap.get(memberId);
 		        Skill skill = new Skill(skillId,skillName);
-		        Activity activity = new Activity(activityId, activityName);
+		        Activity activity = new Activity(activityId, activityName,activityDescription,activityMinAge,activityMaxAge);
 	        	newMember.getSkills().add(skill);
 	        	newMember.getActivities().add(activity);
 	        }
 	        else {
 
 		        Skill skill = new Skill(skillId,skillName);
-		        Activity activity = new Activity(activityId, activityName);
+		        Activity activity = new Activity(activityId, activityName,activityDescription,activityMinAge,activityMaxAge);
 		        Member newMember = new Member(memberId, memberNationalId,memberPhone, memberFirst_Name,
 		        		memberLast_name, "", memberAddress, memberDOB, memberEmail);
 		        if(skillId != null)

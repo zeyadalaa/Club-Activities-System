@@ -12,7 +12,8 @@ public class Member {
     private int nationalID;
     private String firstName;
     private String lastName;
-    private String image;
+
+	private String image;
     private String address;
     private Date DOB;
 	private String email;
@@ -57,7 +58,15 @@ public class Member {
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
-	
+
+    public int getPhone() {
+		return phone;
+	}
+
+
+	public void setPhone(int phone) {
+		this.phone = phone;
+	}
 	public String getLastName() {
 		return lastName;
 	}

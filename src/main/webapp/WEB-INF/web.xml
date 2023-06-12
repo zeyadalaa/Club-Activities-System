@@ -2,11 +2,29 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
   <display-name>Club Activities System</display-name>
   <welcome-file-list>
-    <welcome-file>index.html</welcome-file>
-    <welcome-file>index.htm</welcome-file>
-    <welcome-file>index.jsp</welcome-file>
-    <welcome-file>default.html</welcome-file>
-    <welcome-file>default.htm</welcome-file>
-    <welcome-file>default.jsp</welcome-file>
+    <welcome-file>/JSP/loginPage/loginPage.jsp</welcome-file>
   </welcome-file-list>
+
+    <servlet>
+    <servlet-name>myAdmin</servlet-name>
+    <servlet-class>org.bibalex.Servlet.Admin.AdminServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+	    <servlet-name>myAdmin</servlet-name>
+	    <url-pattern>/myAdmin/*</url-pattern>
+	</servlet-mapping>
+	
+	<filter>  
+	<filter-name>MyFilter</filter-name>  
+	<filter-class>org.bibalex.Filter.MyFilter</filter-class>  
+	</filter>  
+	   
+	<filter-mapping>  
+	<filter-name>MyFilter</filter-name>  
+	<url-pattern>/JSP/*</url-pattern>  
+	<url-pattern>/Member/*</url-pattern>  
+	<url-pattern>/Skill/*</url-pattern>  
+	<url-pattern>/Activity/*</url-pattern>  
+	</filter-mapping>  
+  
 </web-app>

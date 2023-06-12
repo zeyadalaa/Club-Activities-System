@@ -14,7 +14,7 @@ import org.bibalex.Models.Activity;
 import org.bibalex.Models.Member;
 import org.bibalex.Models.Skill;
 
-public class ActivitiesDAO {
+public class ActivityDAO {
 	
     public void addActivity(String name ,String description ,Integer min_age, Integer max_age) throws SQLException {
         ConnectDB connection = new ConnectDB();

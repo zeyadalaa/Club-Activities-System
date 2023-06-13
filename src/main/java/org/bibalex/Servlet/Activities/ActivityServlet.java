@@ -23,9 +23,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import org.bibalex.DAO.ActivityDAO;
+import org.bibalex.DAO.ActivitySkillDAO;
 import org.bibalex.DAO.MemberDAO;
 import org.bibalex.DAO.SkillDAO;
 import org.bibalex.Models.Activity;
+import org.bibalex.Models.Skill;
 
 import jakarta.servlet.RequestDispatcher;
 
@@ -39,11 +41,13 @@ public class ActivityServlet extends HttpServlet {
 	private MemberDAO memberDAO;
 	private ActivityDAO activityDAO;
 	private SkillDAO skillDAO ;
+	private ActivitySkillDAO activitySkillDAO ;
 	
 	public void init() {
 		memberDAO = new MemberDAO();
 		activityDAO = new ActivityDAO();
 		skillDAO = new SkillDAO();
+		activitySkillDAO = new ActivitySkillDAO();
 	}
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -58,19 +62,19 @@ public class ActivityServlet extends HttpServlet {
 		try {
 			switch (action) {
 			case "add":
-				showData(request, response);
+				showNewForm(request, response);
 				break;
 			case "insert":
-				//insertEmployee(request, response);
+				insertActivity(request, response);
 				break;
 			case "delete":
-				//deleteEmployee(request, response);
+				deleteActivity(request, response);
 				break;
 			case "edit":
-				//editForm(request, response);
+				editForm(request, response);
 				break;
 			case "update":
-				//updateEmployee(request, response);
+				updateActivity(request, response);
 				break;
 			default:
 				showData(request, response);
@@ -88,7 +92,132 @@ public class ActivityServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
+	
+	private void showNewForm(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
+		List<Skill> skills;
+		try {
+			skills = skillDAO.getSkills();
+		    request.setAttribute("skills", skills); 
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	    RequestDispatcher dispatcher = request.getRequestDispatcher("/JSP/activity/addActivity.jsp");
+	    
+	    dispatcher.forward(request, response);
+	}
+	
+
+	private void insertActivity(HttpServletRequest request, HttpServletResponse response) 
+			 {
+		String ActivityName = request.getParameter("ActivityName");
+		String ActivityDescription = request.getParameter("ActivityDescription");
+		int skillMinimumAge = Integer.parseInt( request.getParameter("ActivityMinimumAge") );
+		int skillMaximumAge = Integer.parseInt( request.getParameter("ActivityMaximumAge") );
+		String[] selectedSkills = request.getParameterValues("skillsNames[]");
+		try {
+			Integer activityID = activityDAO.addActivity(ActivityName,ActivityDescription,skillMinimumAge,skillMaximumAge);
+
+			if (selectedSkills != null) {
+			    for (String skillId : selectedSkills) {
+			    	Integer skillID = Integer.parseInt(skillId);
+			    	activitySkillDAO.addActivitySkill(activityID, skillID);
+			    }
+			}
+			
+			showData(request, response);
+			
+		}catch (SQLIntegrityConstraintViolationException e) {
+		    String errorMessage = "Activity name already existed !";
+		    request.setAttribute("errorMessage", errorMessage);
+		    try {
+				showData(request, response);
+			} catch (ServletException | IOException e1) {
+				e1.printStackTrace();
+			}
+		} catch (SQLException e) {
+		    String errorMessage = "An error occurred while performing the operation. Please try again later.";
+		    request.setAttribute("errorMessage", errorMessage);
+		    try {
+				showData(request, response);
+			} catch (ServletException | IOException e1) {
+				e1.printStackTrace();
+			}
+		} catch (ServletException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+
+	private void updateActivity(HttpServletRequest request, HttpServletResponse response)  {
+
+		String ActivityName = request.getParameter("ActivityName");
+		String ActivityDescription = request.getParameter("ActivityDescription");
+		int skillMinimumAge = Integer.parseInt( request.getParameter("ActivityMinimumAge") );
+		int skillMaximumAge = Integer.parseInt( request.getParameter("ActivityMaximumAge") );
+		String[] selectedSkills = request.getParameterValues("skillsNames[]");
+		Integer activityID = Integer.parseInt( request.getParameter("ActivityMinimumAge") );
+		try {
+
+			activityDAO.addActivity(ActivityName,ActivityDescription,skillMinimumAge,skillMaximumAge);
+			activitySkillDAO.deleteActivitySkill(activityID);
+			if (selectedSkills != null) {
+			    for (String skillId : selectedSkills) {
+			    	Integer skillID = Integer.parseInt(skillId);
+			    	activitySkillDAO.addActivitySkill(activityID, skillID);
+			    }
+			}
+			
+			showData(request, response);
+		}catch (SQLIntegrityConstraintViolationException e) {
+		    String errorMessage = "Activity name already existed !";
+		    request.setAttribute("errorMessage", errorMessage);
+		    try {
+		    	editForm(request, response);
+			} catch (ServletException | IOException | SQLException e1) {
+				e1.printStackTrace();
+			}
+		    
+		} catch (SQLException | ServletException | IOException e) {
+		    String errorMessage = "An error occurred while performing the operation. Please try again later.";
+		    request.setAttribute("errorMessage", errorMessage);
+		    
+		    try {
+		    	editForm(request, response);
+			} catch (ServletException | IOException | SQLException e1) {
+				e1.printStackTrace();
+			}
+		    
+		}
+	}
+	
+	private void deleteActivity(HttpServletRequest request, HttpServletResponse response) {
+		int activityid = Integer.parseInt( request.getParameter("activityid") );
+		try {
+			activityDAO.deleteActivity(activityid);
+			showData(request, response);
+		} catch (SQLException | ServletException | IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void editForm(HttpServletRequest request, HttpServletResponse response)
+			throws SQLException, ServletException, IOException {
+		int activityid = Integer.parseInt(request.getParameter("activityid"));
+		Activity activity = activityDAO.getActivityByID(activityid);
+		//hatzher al skills hena lama tgeb al skills bt3et al activity dy wa tro7 tgeeb al skill name men skill table by join 
+		request.setAttribute("activity", activity);
+//		request.setAttribute("skills", skills);
+		
+//		System.out.println(activity.getSkills() + " ---------------------------");
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/JSP/activity/addActivity.jsp");
+		dispatcher.forward(request, response);
+
+	}
 	
 	private void showData(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {

@@ -98,3 +98,8 @@ nav ul li a {
 .container input[type="submit"]:hover {
   background-color: #45a049;
 }
+
+.check-box{
+	display: flex;
+}
+

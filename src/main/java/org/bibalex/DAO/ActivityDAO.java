@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,9 +17,9 @@ import org.bibalex.Models.Skill;
 
 public class ActivityDAO {
 	
-    public void addActivity(String name ,String description ,Integer min_age, Integer max_age) throws SQLException {
+    public Integer addActivity(String name ,String description ,Integer min_age, Integer max_age) throws SQLException {
         ConnectDB connection = new ConnectDB();
-        String STP= "CALL addActivity(?,?,?,?)";
+        String STP= "CALL addActivity(?,?,?,?,?)";
         Connection connection1 =connection.ConnectToDatabase();
         CallableStatement statement = null;
         
@@ -27,17 +28,21 @@ public class ActivityDAO {
         statement.setString(2, description);
         statement.setInt(3, min_age);
         statement.setInt(4, max_age);
+        statement.registerOutParameter(5, Types.INTEGER);
         statement.executeUpdate();
+        
+        Integer memberID = statement.getInt(5); 
         
         statement.close();
         connection1.close();
+        return memberID;
     }
     
 
     public void deleteActivity(int activityID) throws SQLException {
 
         ConnectDB connection = new ConnectDB();
-        String STP= "CALL deleteEmployee(?)";
+        String STP= "CALL deleteActivity(?)";
         Connection connection1 =connection.ConnectToDatabase();
         CallableStatement statement = null;
         

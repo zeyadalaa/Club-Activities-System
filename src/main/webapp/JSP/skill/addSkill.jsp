@@ -15,7 +15,7 @@
     </script>
 </head>
 <body>
-    <div class="container">
+    <div class="container-nav">
         <nav>
             <ul>
             	<li><a href="${pageContext.request.contextPath}/Member">Members</a></li>

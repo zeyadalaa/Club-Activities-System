@@ -27,6 +27,12 @@
         </nav>
     </div>
 	<div class="container">
+		<% if (request.getAttribute("errorMessage") != null) { %>
+        <script>
+            showError("<%= request.getAttribute("errorMessage") %>");
+        </script>
+    	<% } %>
+	    
 	    <table>
 	        <tr>
 	            <th>Activity name</th>
@@ -62,13 +68,13 @@
 		       			   <div class="action-buttons">
 			       			   <form action="${pageContext.request.contextPath}/Activity" method="POST">
 								  <input type="hidden" name="action" value="edit" >
-								  <%-- <input type="hidden" name="employeeid" value="<%=employees.get(i).getId() %>"> --%>
+								  <input type="hidden" name="activityid" value="<%=activities.get(i).getId() %>">
 					                <button type="submit" class="updateButton">Update</button>
 							   </form>
 							   
 			       			   <form action="${pageContext.request.contextPath}/Activity" method="POST">
 								  <input type="hidden" name="action" value="delete">
-								  <%-- <input type="hidden" name="employeeid" value="<%=employees.get(i).getId() %>"> --%>
+								 	<input type="hidden" name="activityid" value="<%=activities.get(i).getId() %>">
 				                	<button type="submit" class="deleteButton">Delete</button>
 							   </form>
 						   </div>

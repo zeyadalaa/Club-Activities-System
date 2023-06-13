@@ -34,7 +34,6 @@ public class MyFilter implements Filter{
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         
         HttpSession session = request.getSession(false); 
-		System.out.println("iam in do filter");
 
 	    if (session != null && session.getAttribute("loggedIn") != null && (boolean) session.getAttribute("loggedIn")) {
 	        chain.doFilter(request, response);

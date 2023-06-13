@@ -51,7 +51,7 @@ public class AdminServlet extends HttpServlet {
 			session = request.getSession();
 			session.setAttribute("loggedIn", true);
 			
-		    request.getRequestDispatcher("/JSP/member/viewMembers.jsp").forward(request, response);
+		    request.getRequestDispatcher("/Member").forward(request, response);
 		}else {
 			String errorMessage = "Please enter username and password correct";
 			request.setAttribute("errorMessage", errorMessage);

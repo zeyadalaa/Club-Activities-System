@@ -39,11 +39,11 @@ public class SkillDAO {
 	    return skills;
     }
     
-    public List<Skill> getSkillsByID(int skillID) throws SQLException {
-		List<Skill> skills = new ArrayList<>();
+    public Skill getSkillsByID(int skillID) throws SQLException {
+    	Skill skill = null;
 	
 	    ConnectDB connection = new ConnectDB();
-	    String STP= "CALL getSkills(?)";
+	    String STP= "CALL getSkillByID(?)";
 	    Connection connection1 =connection.ConnectToDatabase();
 	    CallableStatement statement = null;
 	    
@@ -54,13 +54,11 @@ public class SkillDAO {
 	    while (resultSet.next()) {
 	        Integer skillId = resultSet.getInt("id");
 	        String skillName= resultSet.getString("name");
-	        Skill skill = new Skill(skillId,skillName);
-	        
-	        skills.add(skill);
+	         skill = new Skill(skillId,skillName);
 	    }
 	    statement.close();
 	    connection1.close();
-	    return skills;
+	    return skill;
     }
     
     public void deleteSkill(int skillID) throws SQLException {
@@ -90,4 +88,18 @@ public class SkillDAO {
         connection1.close();
     }
     
+    public void updateSkill(Integer skillID , String skillName) throws SQLException {
+        ConnectDB connection = new ConnectDB();
+        String STP= "CALL updateSkill(?,?)";
+        Connection connection1 =connection.ConnectToDatabase();
+        CallableStatement statement = null;
+
+    	statement = connection1.prepareCall(STP);    
+        statement.setInt(1, skillID);
+        statement.setString(2, skillName);
+        statement.executeUpdate();
+        
+        statement.close();
+        connection1.close();
+    }
 }

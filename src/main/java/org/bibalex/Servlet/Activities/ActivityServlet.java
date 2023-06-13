@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
+import java.util.Set;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletContext;
@@ -159,10 +160,9 @@ public class ActivityServlet extends HttpServlet {
 		int skillMinimumAge = Integer.parseInt( request.getParameter("ActivityMinimumAge") );
 		int skillMaximumAge = Integer.parseInt( request.getParameter("ActivityMaximumAge") );
 		String[] selectedSkills = request.getParameterValues("skillsNames[]");
-		Integer activityID = Integer.parseInt( request.getParameter("ActivityMinimumAge") );
+		Integer activityID = Integer.parseInt( request.getParameter("activityid") );
 		try {
-
-			activityDAO.addActivity(ActivityName,ActivityDescription,skillMinimumAge,skillMaximumAge);
+			activityDAO.updateActivity(activityID,ActivityName,ActivityDescription,skillMinimumAge,skillMaximumAge);
 			activitySkillDAO.deleteActivitySkill(activityID);
 			if (selectedSkills != null) {
 			    for (String skillId : selectedSkills) {
@@ -184,6 +184,7 @@ public class ActivityServlet extends HttpServlet {
 		} catch (SQLException | ServletException | IOException e) {
 		    String errorMessage = "An error occurred while performing the operation. Please try again later.";
 		    request.setAttribute("errorMessage", errorMessage);
+			e.printStackTrace();
 		    
 		    try {
 		    	editForm(request, response);
@@ -208,9 +209,12 @@ public class ActivityServlet extends HttpServlet {
 			throws SQLException, ServletException, IOException {
 		int activityid = Integer.parseInt(request.getParameter("activityid"));
 		Activity activity = activityDAO.getActivityByID(activityid);
-		//hatzher al skills hena lama tgeb al skills bt3et al activity dy wa tro7 tgeeb al skill name men skill table by join 
+		Set<String> selectedActivity = activitySkillDAO.getActivitySkillsByID(activityid);
+		List<Skill> skills = skillDAO.getSkills();
+		
 		request.setAttribute("activity", activity);
-//		request.setAttribute("skills", skills);
+		request.setAttribute("skills", skills);
+		request.setAttribute("selectedActivity", selectedActivity);
 		
 //		System.out.println(activity.getSkills() + " ---------------------------");
 

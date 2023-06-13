@@ -2,6 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.Set" %>
 <%@ page import="org.bibalex.Models.Skill" %>
 <%@ page import="org.bibalex.Models.Activity" %>
 <!DOCTYPE html>
@@ -59,12 +60,19 @@
 				
 				<label>Select skills needed:</label>
 				    <% List<Skill> skills = (List<Skill>) request.getAttribute("skills");
+				    	Set<String> selectedActivity = (Set<String>) request.getAttribute("selectedActivity");
 
 				       for (int i = 0; i < skills.size(); i++) { %>
-				       <div class= " check-box">
-				        <input type="checkbox" name="skillsNames[]" id="skill<%=skills.get(i).getId()%>" value="<%=skills.get(i).getId()%>">
-				        <label for="skill<%=skills.get(i).getId()%>"><%=skills.get(i).getName()%></label>
-				       </div>
+					       <div class= " check-box">
+					       <%
+					        if(selectedActivity!=null && selectedActivity.contains(skills.get(i).getName())){
+					       %>
+					        	<input type="checkbox" name="skillsNames[]" id="skill<%=skills.get(i).getId()%>" value="<%=skills.get(i).getId()%>" checked>
+			        		<%}else{ %>
+					        	<input type="checkbox" name="skillsNames[]" id="skill<%=skills.get(i).getId()%>" value="<%=skills.get(i).getId()%>">
+				        	<%} %>
+					        <label for="skill<%=skills.get(i).getId()%>"><%=skills.get(i).getName()%></label>
+					       </div>
 				    <% } %>
 				<%
 					if(activity != null) {

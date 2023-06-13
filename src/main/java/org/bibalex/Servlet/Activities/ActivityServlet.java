@@ -1,13 +1,9 @@
-package org.bibalex.Servlet.Members;
+package org.bibalex.Servlet.Activities;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
-
-import org.bibalex.DAO.ActivityDAO;
-import org.bibalex.DAO.MemberDAO;
-import org.bibalex.DAO.SkillDAO;
-import org.bibalex.Models.Member;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletContext;
@@ -26,16 +22,20 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+import org.bibalex.DAO.ActivityDAO;
+import org.bibalex.DAO.MemberDAO;
+import org.bibalex.DAO.SkillDAO;
+import org.bibalex.Models.Activity;
+
+import jakarta.servlet.RequestDispatcher;
+
 /**
- * Servlet implementation class Member
+ * Servlet implementation class ActivityServlet
  */
-@WebServlet("/Member")
-public class MemberServlet extends HttpServlet {
+@WebServlet("/Activity")
+public class ActivityServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
 	private MemberDAO memberDAO;
 	private ActivityDAO activityDAO;
 	private SkillDAO skillDAO ;
@@ -49,7 +49,7 @@ public class MemberServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("iam here in member servlet");
+		System.out.println("iam here in activity servlet");
 		String action = request.getParameter("action") ;
 		if (action == null || action.equals("")) {
 		    action = "home";
@@ -58,7 +58,7 @@ public class MemberServlet extends HttpServlet {
 		try {
 			switch (action) {
 			case "add":
-				showNewForm(request, response);
+				showData(request, response);
 				break;
 			case "insert":
 				//insertEmployee(request, response);
@@ -73,7 +73,7 @@ public class MemberServlet extends HttpServlet {
 				//updateEmployee(request, response);
 				break;
 			default:
-				showNewForm(request, response);
+				showData(request, response);
 				break;
 			}
 		} catch (Exception ex) {
@@ -89,17 +89,19 @@ public class MemberServlet extends HttpServlet {
 		doGet(request, response);
 	}
 
-	private void showNewForm(HttpServletRequest request, HttpServletResponse response)
+	
+	private void showData(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		List<Member> members = null;
+		List<Activity> activities = null;
 		try {
-			members = memberDAO.getMembers();
-		    request.setAttribute("members", members); 
+			activities = activityDAO.getActivities();
+		    request.setAttribute("activities", activities); 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}		
-	    RequestDispatcher dispatcher = request.getRequestDispatcher("/JSP/member/viewMembers.jsp");
+	    RequestDispatcher dispatcher = request.getRequestDispatcher("/JSP/activity/viewActivites.jsp");
 	    
 	    dispatcher.forward(request, response);
 	}
+
 }

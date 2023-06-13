@@ -21,9 +21,9 @@
     <div class="container">
         <nav>
            	<ul>
-                <li><a href="${pageContext.request.contextPath}/JSP/member/viewMembers.jsp">Members</a></li>
-                <li><a href="${pageContext.request.contextPath}/JSP/activity/viewActivites.jsp">Activities</a></li>
-                <li><a href="${pageContext.request.contextPath}/JSP/skill/viewSkills.jsp">Skills</a></li>
+                <li><a href="${pageContext.request.contextPath}/Member">Members</a></li>
+                <li><a href="${pageContext.request.contextPath}/Activity">Activities</a></li>
+                <li><a href="${pageContext.request.contextPath}/Skill">Skills</a></li>
             </ul>
         </nav>
     </div>
@@ -75,13 +75,13 @@
 					   <td>
 					   
 		       			   <div class="action-buttons">
-			       			   <form action="${pageContext.request.contextPath}/Employee" method="POST">
+			       			   <form action="${pageContext.request.contextPath}/Member" method="POST">
 								  <input type="hidden" name="action" value="edit" >
 								  <%-- <input type="hidden" name="employeeid" value="<%=employees.get(i).getId() %>"> --%>
 					                <button type="submit" class="updateButton">Update</button>
 							   </form>
 							   
-			       			   <form action="${pageContext.request.contextPath}/Employee" method="POST">
+			       			   <form action="${pageContext.request.contextPath}/Member" method="POST">
 								  <input type="hidden" name="action" value="delete">
 								  <%-- <input type="hidden" name="employeeid" value="<%=employees.get(i).getId() %>"> --%>
 				                	<button type="submit" class="deleteButton">Delete</button>
@@ -91,20 +91,6 @@
 			            <%}%>
 	        </tr>
 		</table>
-		
-		<%-- <td><a href="edit?id=<%= employees.get(i).getId() %>">Edit</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="delete?id=<%= employees.get(i).getId() %>">Delete</a></td>
-    		 --%>		
-	        			<!-- <tr class="rows"> -->
-	            <%-- <td><%= employee.getId() %></td>
-	            <td><%= employee.getFirst_name() %></td>
-	            <td><%= employee.getLast_name() %></td>
-	            <td><%= employee.getDOB() %></td>
-	            <td><%= employee.getEmail() %></td>
-	            <td><%= employee.getDepartment_id() %></td> --%><!-- 
-	            <td>
-	                <button>Delete</button>
-	                <button>Update</button>
-	            </td> -->
 	    <form action="${pageContext.request.contextPath}/Member" method="POST">
 		  <input type="hidden" name="action" value="add">
 		  <button type="submit" class="addButton">Add Member</button>

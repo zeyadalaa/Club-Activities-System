@@ -14,6 +14,25 @@
 	    <url-pattern>/myAdmin/*</url-pattern>
 	</servlet-mapping>
 	
+    <servlet>
+	    <servlet-name>ActivityServlet</servlet-name>
+	    <servlet-class>org.bibalex.Servlet.Activity.ActivityServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+	    <servlet-name>ActivityServlet</servlet-name>
+	    <url-pattern>/Activity/*</url-pattern>
+	</servlet-mapping>
+	
+	
+    <servlet>
+	    <servlet-name>SkillServlet</servlet-name>
+	    <servlet-class>org.bibalex.Servlet.Activity.SkillServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+	    <servlet-name>SkillServlet</servlet-name>
+	    <url-pattern>/Skill/*</url-pattern>
+	</servlet-mapping>
+	
 	<filter>  
 	<filter-name>MyFilter</filter-name>  
 	<filter-class>org.bibalex.Filter.MyFilter</filter-class>  

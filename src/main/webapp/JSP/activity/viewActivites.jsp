@@ -3,6 +3,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%> 
 
 <%@ page import="java.util.List" %>
+<%@ page import="org.bibalex.Models.Skill" %>
+<%@ page import="org.bibalex.Models.Activity" %>
 <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="jquery-3.6.0.min.js"></script> -->
 
@@ -18,9 +20,9 @@
     <div class="container">
         <nav>
             <ul>
-                <li><a href="${pageContext.request.contextPath}/Member">Members</a></li>
-                <li><a href="${pageContext.request.contextPath}/JSP/activity/viewActivites.jsp">Activities</a></li>
-                <li><a href="${pageContext.request.contextPath}/JSP/skill/viewSkills.jsp">Skills</a></li>
+            	<li><a href="${pageContext.request.contextPath}/Member">Members</a></li>
+                <li><a href="${pageContext.request.contextPath}/Activity">Activities</a></li>
+                <li><a href="${pageContext.request.contextPath}/Skill">Skills</a></li>
             </ul>
         </nav>
     </div>
@@ -31,54 +33,54 @@
 	            <th>Description</th>
 	            <th>Minimum Age</th>
 	            <th>Maximum Age</th>
-	            <th>Skills</th>
+	            <th>Skills Needed</th>
 	            <th>Actions</th>
 	        </tr>
 	        
       		<tr class="rows">
         		
 	        		   <tr class="rows">
-	       			   <td>zeyad</td>
-	       			   <td>zeyad</td>
-	       			   <td>zeyad</td>
-	       			   <td>zeyad</td>
-	       			   <td>zeyad</td>
-	       			   <td>
+	       			   <%
+		        		List<Activity> activities = (List<Activity>) request.getAttribute("activities");
+	        		   if (activities != null)
+						for(int i = 0 ;i<activities.size();i++){
+	        			%>
+	        		   <tr class="rows">
+	       			   <td><%out.println(activities.get(i).getName()); %></td>
+	       			   <td><%out.println(activities.get(i).getDescription()); %></td>
+	       			   <td><%out.println(activities.get(i).getMinAge()); %></td>
+	       			   <td><%out.println(activities.get(i).getMaxAge()); %></td>
+					   <td>
+						<%
+							for ( Skill  var : activities.get(i).getSkills())
+								out.println(var.getName() != null ? var.getName() + "<br>" : "" );
+						
+						%>
+					   </td> 
+					   <td>
+					   
 		       			   <div class="action-buttons">
-			       			   <form action="${pageContext.request.contextPath}/Employee" method="POST">
+			       			   <form action="${pageContext.request.contextPath}/Activity" method="POST">
 								  <input type="hidden" name="action" value="edit" >
 								  <%-- <input type="hidden" name="employeeid" value="<%=employees.get(i).getId() %>"> --%>
 					                <button type="submit" class="updateButton">Update</button>
 							   </form>
 							   
-			       			   <form action="${pageContext.request.contextPath}/Employee" method="POST">
+			       			   <form action="${pageContext.request.contextPath}/Activity" method="POST">
 								  <input type="hidden" name="action" value="delete">
 								  <%-- <input type="hidden" name="employeeid" value="<%=employees.get(i).getId() %>"> --%>
 				                	<button type="submit" class="deleteButton">Delete</button>
 							   </form>
 						   </div>
 			            </td>
+			            <%}%>
 	        </tr>
 		</table>
 		
-		<%-- <td><a href="edit?id=<%= employees.get(i).getId() %>">Edit</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="delete?id=<%= employees.get(i).getId() %>">Delete</a></td>
-    		 --%>		
-	        			<!-- <tr class="rows"> -->
-	            <%-- <td><%= employee.getId() %></td>
-	            <td><%= employee.getFirst_name() %></td>
-	            <td><%= employee.getLast_name() %></td>
-	            <td><%= employee.getDOB() %></td>
-	            <td><%= employee.getEmail() %></td>
-	            <td><%= employee.getDepartment_id() %></td> --%><!-- 
-	            <td>
-	                <button>Delete</button>
-	                <button>Update</button>
-	            </td> -->
 	    <form action="${pageContext.request.contextPath}/Activity" method="POST">
 		  <input type="hidden" name="action" value="add">
 		  <button type="submit" class="addButton">Add Activity</button>
 		</form>
-	    <!-- <button  class="addButton">Add</button> -->
     </div>
 
 </body>

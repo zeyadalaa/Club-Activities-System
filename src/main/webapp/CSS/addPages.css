@@ -1,0 +1,100 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+.container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20%;
+  padding: 20px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+}
+.container-nav{
+    font-size: 20px;
+    font-family: 'Arial Narrow', Arial, sans-serif;
+    text-align: center;
+    margin: auto;
+    width: 70%;
+}
+
+nav {
+    background-color: #f2f2f2;
+    display: inline-block;
+    padding: 10px;
+    width: 100%;
+}
+
+nav {
+    background-color: #f2f2f2;
+    display: inline-block;
+    padding: 10px;
+    width: 100%;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline-block;
+    margin-right: 20px;
+    margin-left: 20px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #333;
+    padding: 5px;
+}
+.add-employee-form  {
+	width: 91%;
+}
+.container h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.container label {
+  display: block;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.container input[type="text"],
+.container input[type="date"],
+.container input[type="email"],
+.container .dropdown,
+.container select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+#departmentId ,#sectionId{
+  width: 106%;
+}
+
+
+.container input[type="submit"] {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-top: 20px;
+  border: none;
+  margin: 20px auto 0 10px;
+  border-radius: 4px;
+  background-color: #4CAF50;
+  color: #fff;
+  cursor: pointer;
+}
+
+.container input[type="submit"]:hover {
+  background-color: #45a049;
+}

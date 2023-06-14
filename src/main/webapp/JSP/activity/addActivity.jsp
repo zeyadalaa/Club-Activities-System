@@ -53,10 +53,10 @@
 	            <input type="text" name="ActivityDescription" id="ActivityDescription"  value="${activity.description}" required><br>
 				
 				<label for="Activity ">Minimum Age:</label>
-	            <input type="text" name="ActivityMinimumAge" id="ActivityMinimumAge"  value="${activity.minAge}" required><br>
+	            <input type="number" name="ActivityMinimumAge" id="ActivityMinimumAge"  value="${activity.minAge}" required min="1"><br>
 	
 				<label for="Activity ">Maximum Age:</label>
-	            <input type="text" name="ActivityMaximumAge" id="ActivityMaximumAge" value="${activity.maxAge}" required><br>
+	            <input type="number" name="ActivityMaximumAge" id="ActivityMaximumAge" value="${activity.maxAge}" required min="2"><br>
 				
 				<label>Select skills needed:</label>
 				    <% List<Skill> skills = (List<Skill>) request.getAttribute("skills");

@@ -15,6 +15,13 @@
         function showError(message) {
             alert(message); // Replace with your preferred pop-up mechanism
         }
+        
+        function minVal(){
+        	var min = document.getElementById("ActivityMinimumAge");  
+        	var max = document.getElementById("ActivityMaximumAge");        	
+        	max.setAttribute("min",min.setAttribute(min)); 
+        	console.log(min, max , min.getAttribute(min));
+        }
     </script>
 </head>
 <body>
@@ -53,10 +60,12 @@
 	            <input type="text" name="ActivityDescription" id="ActivityDescription"  value="${activity.description}" required><br>
 				
 				<label for="Activity ">Minimum Age:</label>
-	            <input type="number" name="ActivityMinimumAge" id="ActivityMinimumAge"  value="${activity.minAge}" required min="1"><br>
-	
+	            <input type="number" name="ActivityMinimumAge" id="ActivityMinimumAge"  value="${activity.minAge}" required min="1" 
+	            onchange="document.getElementById('ActivityMaximumAge').min=parseInt(this.value)+1;"
+	            ><br>
+				
 				<label for="Activity ">Maximum Age:</label>
-	            <input type="number" name="ActivityMaximumAge" id="ActivityMaximumAge" value="${activity.maxAge}" required min="2"><br>
+	            <input type="number" name="ActivityMaximumAge" id="ActivityMaximumAge" value="${activity.maxAge}" required ><br>
 				
 				<label>Select skills needed:</label>
 				    <% List<Skill> skills = (List<Skill>) request.getAttribute("skills");

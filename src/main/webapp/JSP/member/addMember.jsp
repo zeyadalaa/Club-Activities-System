@@ -5,6 +5,7 @@
 <%@ page import="java.util.Set" %>
 <%@ page import="org.bibalex.Models.Skill" %>
 <%@ page import="org.bibalex.Models.Activity" %>
+<%@ page import="org.bibalex.Models.Member" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,35 +37,49 @@
         </script>
     	<% } %>
 	    
-	    <%Activity activity = (Activity) request.getAttribute("activity"); %>
+	    <%Member member = (Member) request.getAttribute("member"); 
+
+	    java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
+	    java.util.Date currentDate = new java.util.Date();
+	    String formattedDate = dateFormat.format(currentDate);
+	    %>
 	        <%
-					if(activity != null) {
+					if(member != null) {
 					%>
-	        			<h1>Edit Activity</h1>
+	        			<h1>Edit Member</h1>
 		          	<%}else{ %>
-	        			<h1>Add Activity</h1>
+	        			<h1>Add Member</h1>
 		          <%} %>
-	        <form action="Activity" method="POST" class="add-employee-form">
+	        <form action="Member" method="POST" class="add-employee-form" enctype="multipart/form-data">
 	
-	            <label for="Activity ">Activity Name:</label>
-				<input type="hidden" name="activityid" value="${activity.id}">
-	            <input type="text" name="ActivityName" id="ActivityName"  value="${activity.name}" required><br>
+	            <label for="MemberFirstName">First name:</label>
+				<input type="hidden" name="memberid" value="${member.id}">
+	            <input type="text" name="MemberFirstName" id="MemberFirstName"  value="${member.firstName}" required><br>
 	
-				<label for="Activity ">Description:</label>
-	            <input type="text" name="ActivityDescription" id="ActivityDescription"  value="${activity.description}" required><br>
+				<label for="MemberLastName ">Last name:</label>
+	            <input type="text" name="MemberLastName" id="MemberLastName"  value="${member.lastName}" required><br>
+	            
+				<label for="MemberNationalID ">National ID:</label>
+	            <input type="number" name="MemberNationalID" id="MemberNationalID"  value="${member.nationalID}" required><br>
+	            
+				<label for="MemberPhone ">Phone Number:</label>
+	            <input type="number" name="MemberPhone" id="MemberPhone"  value="${member.phone}" required><br>
+	            
+				<label for="MemberEmail ">Email:</label>
+	            <input type="email" name="MemberEmail" id="MemberEmail"  value="${member.email}" required min="1"><br>
 				
-				<label for="Activity ">Minimum Age:</label>
-	            <input type="number" name="ActivityMinimumAge" id="ActivityMinimumAge"  value="${activity.minAge}" required min="1" 
-	            onchange="document.getElementById('ActivityMaximumAge').min=parseInt(this.value)+1;"
-	            ><br>
+	            <label for="MemberDOB">Date of Birth:</label>
+				<input type="date" name="MemberDOB" id="MemberDOB" value="<%= formattedDate %>" max="<%= formattedDate %>" required><br>
 				
-				<label for="Activity ">Maximum Age:</label>
-	            <input type="number" name="ActivityMaximumAge" id="ActivityMaximumAge" value="${activity.maxAge}" required ><br>
-				
+				<label for="MemberAddress ">Address:</label>
+	            <input type="text" name="MemberAddress" id="MemberAddress"  value="${member.address}" required><br><br>
+	            
+			    <input type="file" name="imageFile" accept="image/*">
+			    
 				<label>Select skills needed:</label>
 				    <% List<Skill> skills = (List<Skill>) request.getAttribute("skills");
 				    	Set<String> selectedSkills = (Set<String>) request.getAttribute("selectedSkills");
-
+						if(skills != null)
 				       for (int i = 0; i < skills.size(); i++) { %>
 					       <div class= " check-box">
 					       <%
@@ -78,13 +93,13 @@
 					       </div>
 				    <% } %>
 				<%
-					if(activity != null) {
+					if(member != null) {
 				%>
 				    <input type="hidden" name="action" value="update">
-		            <input class="add" type="submit" value="Update Activity">
+		            <input class="add" type="submit" value="Update Member">
 				<%}else{ %>
 				    <input type="hidden" name="action" value="insert">
-		            <input class="add" type="submit" value="Add Activity">
+		            <input class="add" type="submit" value="Add Member">
 	            <%} %>
 				
 	        </form>

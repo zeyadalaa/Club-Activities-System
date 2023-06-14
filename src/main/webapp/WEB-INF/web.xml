@@ -33,6 +33,15 @@
 	    <url-pattern>/Skill/*</url-pattern>
 	</servlet-mapping>
 	
+    <servlet>
+	    <servlet-name>MemberServlet</servlet-name>
+	    <servlet-class>org.bibalex.Servlet.Activity.MemberServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+	    <servlet-name>MemberServlet</servlet-name>
+	    <url-pattern>/Member/*</url-pattern>
+	</servlet-mapping>
+	
 	<filter>  
 	<filter-name>MyFilter</filter-name>  
 	<filter-class>org.bibalex.Filter.MyFilter</filter-class>  
@@ -45,5 +54,11 @@
 	<url-pattern>/Skill/*</url-pattern>  
 	<url-pattern>/Activity/*</url-pattern>  
 	</filter-mapping>  
+	
+	
+    <!-- Other configuration -->
+    
+
+	
   
 </web-app>

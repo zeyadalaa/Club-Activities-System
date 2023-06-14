@@ -13,14 +13,14 @@ public class Member {
     private String firstName;
     private String lastName;
 
-	private String image;
+	private byte[] image;
     private String address;
     private Date DOB;
 	private String email;
     private Set<Activity> activities;
     private Set<Skill> skills;
     
-    public Member(int id, int nationalID,int phone, String firstName, String lastName, String image, String address, Date dOB, String email) {
+    public Member(int id, int nationalID,int phone, String firstName, String lastName, byte[] image, String address, Date dOB, String email) {
 		this.id = id;
 		this.nationalID = nationalID;
 		this.phone = phone;
@@ -75,11 +75,11 @@ public class Member {
 		this.lastName = lastName;
 	}
 	
-	public String getImage() {
+	public byte[] getImage() {
 		return image;
 	}
 	
-	public void setImage(String image) {
+	public void setImage(byte[] image) {
 		this.image = image;
 	}
 	

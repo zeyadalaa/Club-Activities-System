@@ -67,6 +67,7 @@ nav ul li a {
 }
 
 .container input[type="text"],
+.container input[type="number"],
 .container input[type="date"],
 .container input[type="email"],
 .container .dropdown,

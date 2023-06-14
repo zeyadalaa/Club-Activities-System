@@ -209,12 +209,12 @@ public class ActivityServlet extends HttpServlet {
 			throws SQLException, ServletException, IOException {
 		int activityid = Integer.parseInt(request.getParameter("activityid"));
 		Activity activity = activityDAO.getActivityByID(activityid);
-		Set<String> selectedActivity = activitySkillDAO.getActivitySkillsByID(activityid);
+		Set<String> selectedSkills = activitySkillDAO.getActivitySkillsByID(activityid);
 		List<Skill> skills = skillDAO.getSkills();
 		
 		request.setAttribute("activity", activity);
 		request.setAttribute("skills", skills);
-		request.setAttribute("selectedActivity", selectedActivity);
+		request.setAttribute("selectedSkills", selectedSkills);
 		
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/JSP/activity/addActivity.jsp");

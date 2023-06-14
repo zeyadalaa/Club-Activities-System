@@ -6,6 +6,8 @@
 <%@ page import="org.bibalex.Models.Member" %>
 <%@ page import="org.bibalex.Models.Skill" %>
 <%@ page import="org.bibalex.Models.Activity" %>
+<%@ page import="java.util.Base64" %>
+
 <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="jquery-3.6.0.min.js"></script> -->
 
@@ -30,6 +32,7 @@
 	<div class="container">
 	    <table>
 	        <tr>
+	        	<th></th>
 	        	<th>First Name</th>
 	            <th>Last Name</th>
 	            <th>National ID</th>
@@ -52,6 +55,17 @@
 						for(int i = 0 ;i<members.size();i++){
 	        			%>
 	        		   <tr class="rows">
+	        		   <%
+	        		   //Encode the byte array to Base64 
+	        		   if(members.get(i).getImage() != null){
+        		   		String encodedImage = Base64.getEncoder().encodeToString(members.get(i).getImage());
+	        		   %>
+	        		   
+	        		   <%-- Display the image using the Base64-encoded data --%>
+					   <td><img src="data:image/jpeg;base64, <%= encodedImage %>" alt="User Image" /></td>
+						<%} else {%>
+						<td></td>
+						<%} %>	        		   
 	       			   <td><%out.println(members.get(i).getFirstName()); %></td>
 	       			   <td><%out.println(members.get(i).getLastName()); %></td>
 	       			   <td><%out.println(members.get(i).getNationalID()); %></td>
@@ -77,13 +91,13 @@
 		       			   <div class="action-buttons">
 			       			   <form action="${pageContext.request.contextPath}/Member" method="POST">
 								  <input type="hidden" name="action" value="edit" >
-								  <%-- <input type="hidden" name="employeeid" value="<%=employees.get(i).getId() %>"> --%>
+								  <input type="hidden" name="memberid" value="<%= members.get(i).getId() %>">
 					                <button type="submit" class="updateButton">Update</button>
 							   </form>
 							   
 			       			   <form action="${pageContext.request.contextPath}/Member" method="POST">
 								  <input type="hidden" name="action" value="delete">
-								  <%-- <input type="hidden" name="employeeid" value="<%=employees.get(i).getId() %>"> --%>
+								  <input type="hidden" name="memberid" value="<%= members.get(i).getId() %>">
 				                	<button type="submit" class="deleteButton">Delete</button>
 							   </form>
 						   </div>

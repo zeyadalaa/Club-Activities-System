@@ -1,10 +1,16 @@
 package org.bibalex.DAO;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.sql.Blob;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -45,6 +51,9 @@ public class MemberDAO {
 	        String activityDescription= resultSet.getString("description");
 	        Integer  activityMinAge = resultSet.getInt("min_age");
 	        Integer  activityMaxAge = resultSet.getInt("max_age");
+	        Blob  imageBlob = resultSet.getBlob("image");
+	        byte[] imageData = null;
+            
 	        if(hashMap.containsKey(memberId)) {
 	        	Member newMember = hashMap.get(memberId);
 		        Skill skill = new Skill(skillId,skillName);
@@ -53,11 +62,13 @@ public class MemberDAO {
 	        	newMember.getActivities().add(activity);
 	        }
 	        else {
+	        	if(imageBlob != null)
+	        		imageData = imageBlob.getBytes(1,(int) imageBlob.length());
 
 		        Skill skill = new Skill(skillId,skillName);
 		        Activity activity = new Activity(activityId, activityName,activityDescription,activityMinAge,activityMaxAge);
 		        Member newMember = new Member(memberId, memberNationalId,memberPhone, memberFirst_Name,
-		        		memberLast_name, "", memberAddress, memberDOB, memberEmail);
+		        		memberLast_name, imageData, memberAddress, memberDOB, memberEmail);
 		        if(skillId != null)
 		        	newMember.addSkill(skill);
 		        if(activityId != null)
@@ -70,12 +81,11 @@ public class MemberDAO {
 	    connection1.close();
 	    return member;
     }
-    
 
-    public void addMember(String firstName,String lastName,Integer nationalID, Integer phone, String email, 
-    		Date date,String address) throws SQLException {
+    public Integer addMember(String firstName,String lastName,Integer nationalID, Integer phone, String email, 
+    		Date date,String address, InputStream imageInputStream) throws SQLException {
         ConnectDB connection = new ConnectDB();
-        String STP= "CALL addMember(?,?,?,?,?,?,?)";
+        String STP= "CALL addMember(?,?,?,?,?,?,?,?,?)";
         Connection connection1 =connection.ConnectToDatabase();
         CallableStatement statement = null;
         
@@ -87,10 +97,16 @@ public class MemberDAO {
         statement.setString(5, email);
         statement.setDate(6, date);
         statement.setString(7, address);
+        statement.setBinaryStream(8, imageInputStream);
+
+        statement.registerOutParameter(9, Types.INTEGER);
         statement.executeUpdate();
+        
+        Integer memberID = statement.getInt(9); 
         
         statement.close();
         connection1.close();
+        return memberID;
     }
 
 

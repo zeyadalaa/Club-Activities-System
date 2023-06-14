@@ -130,17 +130,17 @@ public class ActivityServlet extends HttpServlet {
 			showData(request, response);
 			
 		}catch (SQLIntegrityConstraintViolationException e) {
-		    String errorMessage = "Activity name already existed !";
-		    request.setAttribute("errorMessage", errorMessage);
 		    try {
-				showData(request, response);
+			    String errorMessage = "Activity name already existed !";
+			    request.setAttribute("errorMessage", errorMessage);
+			    showNewForm(request, response);
 			} catch (ServletException | IOException e1) {
 				e1.printStackTrace();
 			}
 		} catch (SQLException e) {
-		    String errorMessage = "An error occurred while performing the operation. Please try again later.";
-		    request.setAttribute("errorMessage", errorMessage);
 		    try {
+			    String errorMessage = "An error occurred while performing the operation. Please try again later.";
+			    request.setAttribute("errorMessage", errorMessage);
 				showData(request, response);
 			} catch (ServletException | IOException e1) {
 				e1.printStackTrace();
@@ -173,20 +173,20 @@ public class ActivityServlet extends HttpServlet {
 			
 			showData(request, response);
 		}catch (SQLIntegrityConstraintViolationException e) {
-		    String errorMessage = "Activity name already existed !";
-		    request.setAttribute("errorMessage", errorMessage);
 		    try {
+			    String errorMessage = "Activity name already existed !";
+			    request.setAttribute("errorMessage", errorMessage);
 		    	editForm(request, response);
 			} catch (ServletException | IOException | SQLException e1) {
 				e1.printStackTrace();
 			}
 		    
 		} catch (SQLException | ServletException | IOException e) {
-		    String errorMessage = "An error occurred while performing the operation. Please try again later.";
-		    request.setAttribute("errorMessage", errorMessage);
 			e.printStackTrace();
 		    
 		    try {
+			    String errorMessage = "An error occurred while performing the operation. Please try again later.";
+			    request.setAttribute("errorMessage", errorMessage);
 		    	editForm(request, response);
 			} catch (ServletException | IOException | SQLException e1) {
 				e1.printStackTrace();
@@ -216,7 +216,6 @@ public class ActivityServlet extends HttpServlet {
 		request.setAttribute("skills", skills);
 		request.setAttribute("selectedActivity", selectedActivity);
 		
-//		System.out.println(activity.getSkills() + " ---------------------------");
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/JSP/activity/addActivity.jsp");
 		dispatcher.forward(request, response);

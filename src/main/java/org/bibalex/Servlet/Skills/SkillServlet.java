@@ -104,10 +104,9 @@ public class SkillServlet extends HttpServlet {
 			skillDAO.addSkill(skillName);
 			showData(request, response);
 		}catch (SQLIntegrityConstraintViolationException e) {
-		    // Handle unique constraint violation
-		    String errorMessage = "Skill already existed !";
-		    request.setAttribute("errorMessage", errorMessage);
 		    try {
+			    String errorMessage = "Skill already existed !";
+			    request.setAttribute("errorMessage", errorMessage);
 				request.getRequestDispatcher("/JSP/skill/addSkill.jsp").forward(request, response);
 			} catch (ServletException e1) {
 				e1.printStackTrace();
@@ -115,12 +114,10 @@ public class SkillServlet extends HttpServlet {
 				e1.printStackTrace();
 			}
 		} catch (SQLException | ServletException | IOException e) {
-		    // Handle other SQL exceptions
-		    String errorMessage = "An error occurred while performing the operation. Please try again later.";
-		    request.setAttribute("errorMessage", errorMessage);
-		    
 		    try {
-				request.getRequestDispatcher("/JSP/skill/addSkill.jsp").forward(request, response);
+			    String errorMessage = "An error occurred while performing the operation. Please try again later.";
+			    request.setAttribute("errorMessage", errorMessage);
+			    showNewForm(request, response);
 			} catch (ServletException e1) {
 				e1.printStackTrace();
 			} catch (IOException e1) {
@@ -148,20 +145,20 @@ public class SkillServlet extends HttpServlet {
 			skillDAO.updateSkill(skillID,skillName);
 			showData(request, response);
 		}catch (SQLIntegrityConstraintViolationException e) {
-		    String errorMessage = "Skill name already existed !";
-		    request.setAttribute("errorMessage", errorMessage);
 		    
 		    try {
+			    String errorMessage = "Skill name already existed !";
+			    request.setAttribute("errorMessage", errorMessage);
 		    	editForm(request, response);
 			} catch (ServletException | IOException | SQLException e1) {
 				e1.printStackTrace();
 			}
 		    
 		} catch (SQLException | ServletException | IOException e) {
-		    String errorMessage = "An error occurred while performing the operation. Please try again later.";
-		    request.setAttribute("errorMessage", errorMessage);
 		    
 		    try {
+			    String errorMessage = "An error occurred while performing the operation. Please try again later.";
+			    request.setAttribute("errorMessage", errorMessage);
 		    	editForm(request, response);
 			} catch (ServletException | IOException | SQLException e1) {
 				e1.printStackTrace();

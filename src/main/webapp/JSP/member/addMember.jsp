@@ -6,6 +6,7 @@
 <%@ page import="org.bibalex.Models.Skill" %>
 <%@ page import="org.bibalex.Models.Activity" %>
 <%@ page import="org.bibalex.Models.Member" %>
+<%@ page import="java.util.Base64" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -73,9 +74,38 @@
 				
 				<label for="MemberAddress ">Address:</label>
 	            <input type="text" name="MemberAddress" id="MemberAddress"  value="${member.address}" required><br><br>
+				
+				<%
+				 List<Activity>selectedActivities = ( List<Activity>) request.getAttribute("selectedActivities");
+					if(member != null && selectedActivities != null){
+				%>
+						<label for="MemberActivity "> Activities enrolled in: </label>
+				<%
+						for (Activity activity : selectedActivities) {
+				%>
+						<div class = "activities">
+	       					<label id="activityLabel" name="activityLabel"><%= activity.getName() %></label>
+							<form action="${pageContext.request.contextPath}/Member" method="POST">
+								  <input type="hidden" name="action" value="deleteMemberActivity">
+								  <input type="hidden" name="activityid" value="<%= activity.getId() %>">
+								  <input type="hidden" name="memberID" value="<%= member.getId() %>">
+			                		<button type="submit" class="deleteButton">Delete</button>
+						  	</form>
+						</div>
+						<%}
+				} %>
+				
 	            
-			    <input type="file" name="imageFile" accept="image/*">
-			    
+	            <%
+        		   if(member != null && member.getImage() != null){
+       		   			String encodedImage = Base64.getEncoder().encodeToString(member.getImage());
+				%>
+				<br>
+				<label for="imageFile ">Upload Image:</label>
+				
+	            	<img src="data:image/jpeg;base64, <%= encodedImage %>" alt="User Image" />
+			    <%}else %>
+			    	<input type="file" name="imageFile" accept="image/*">
 				<label>Select skills needed:</label>
 				    <% List<Skill> skills = (List<Skill>) request.getAttribute("skills");
 				    	Set<String> selectedSkills = (Set<String>) request.getAttribute("selectedSkills");

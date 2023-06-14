@@ -12,7 +12,10 @@ public class Activity {
     private Set<Member> members;
     private Set<Skill> skills;
 
-
+	public Activity(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
 	public Activity(int id, String name,String description, int minAge, int maxAge) {
         this.id = id;

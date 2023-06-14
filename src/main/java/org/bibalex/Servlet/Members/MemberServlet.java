@@ -8,6 +8,7 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Set;
 
 import org.bibalex.DAO.ActivityDAO;
 import org.bibalex.DAO.ActivitySkillDAO;
@@ -87,8 +88,11 @@ public class MemberServlet extends HttpServlet {
 			case "delete":
 				deleteMember(request, response);
 				break;
+			case "deleteMemberActivity":
+				deleteMemberActivity(request, response);
+				break;
 			case "edit":
-				//editForm(request, response);
+				editForm(request, response);
 				break;
 			case "update":
 				//updateEmployee(request, response);
@@ -101,13 +105,31 @@ public class MemberServlet extends HttpServlet {
 			throw new ServletException(ex);
 		}
 	}
-
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
+	}
+	
+	private void editForm(HttpServletRequest request, HttpServletResponse response)
+			throws SQLException, ServletException, IOException {
+		Integer memberid = Integer.parseInt(request.getParameter("memberid"));
+		Member member = memberDAO.getMemberByID(memberid);
+		Set<String> selectedSkills = memberSkillDAO.getMemberSkillsByID(memberid);
+		List<Skill> skills = skillDAO.getSkills();
+		List<Activity> selectedActivities = memberActivityDAO.getMemberActivityByID(memberid);
+		
+		request.setAttribute("member", member);
+		request.setAttribute("skills", skills);
+		request.setAttribute("selectedSkills", selectedSkills);
+		request.setAttribute("selectedActivities", selectedActivities);
+		
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/JSP/member/addMember.jsp");
+		dispatcher.forward(request, response);
+
 	}
 	
 	private void showNewForm(HttpServletRequest request, HttpServletResponse response)
@@ -194,6 +216,16 @@ public class MemberServlet extends HttpServlet {
 		}
 	}
 
+	private void deleteMemberActivity(HttpServletRequest request, HttpServletResponse response) {
+		int activityid = Integer.parseInt( request.getParameter("activityid") );
+		int memberid = Integer.parseInt( request.getParameter("memberID") );
+		try {
+			memberActivityDAO.deleteMemberActivity(activityid,memberid);
+			showData(request, response);
+		} catch (SQLException | ServletException | IOException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	private void deleteMember(HttpServletRequest request, HttpServletResponse response) {
 		int memberid = Integer.parseInt( request.getParameter("memberid") );

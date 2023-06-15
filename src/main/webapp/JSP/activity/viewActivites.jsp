@@ -1,6 +1,6 @@
 
 
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%> 
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <%@ page import="java.util.List" %>
 <%@ page import="org.bibalex.Models.Skill" %>
@@ -13,7 +13,7 @@
 <html>
 <head>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/CSS/view.css">
-<meta charset="ISO-8859-1">    
+    <meta charset="UTF-8">
 <title>Master Detail</title>
 </head>
 <body>

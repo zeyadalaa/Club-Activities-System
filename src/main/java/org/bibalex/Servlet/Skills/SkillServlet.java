@@ -183,6 +183,7 @@ public class SkillServlet extends HttpServlet {
 		List<Skill> skills = null;
 		skills = skillDAO.getSkills();
 	    request.setAttribute("skills", skills); 
+	    response.setCharacterEncoding("UTF-8");
 	    RequestDispatcher dispatcher = request.getRequestDispatcher("/JSP/skill/viewSkills.jsp");
 	    
 	    dispatcher.forward(request, response);

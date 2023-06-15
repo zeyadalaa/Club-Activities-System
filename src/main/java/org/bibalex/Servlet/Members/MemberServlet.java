@@ -95,7 +95,7 @@ public class MemberServlet extends HttpServlet {
 				editForm(request, response);
 				break;
 			case "update":
-				//updateEmployee(request, response);
+				updateActivity(request, response);
 				break;
 			default:
 				showData(request, response);
@@ -119,12 +119,14 @@ public class MemberServlet extends HttpServlet {
 		Member member = memberDAO.getMemberByID(memberid);
 		Set<String> selectedSkills = memberSkillDAO.getMemberSkillsByID(memberid);
 		List<Skill> skills = skillDAO.getSkills();
-		List<Activity> selectedActivities = memberActivityDAO.getMemberActivityByID(memberid);
+		Set<Activity> selectedActivities = memberActivityDAO.getMemberActivityByID(memberid);
+		List<Activity> activities = activityDAO.getActivities();
 		
 		request.setAttribute("member", member);
 		request.setAttribute("skills", skills);
 		request.setAttribute("selectedSkills", selectedSkills);
 		request.setAttribute("selectedActivities", selectedActivities);
+		request.setAttribute("activities", activities);
 		
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/JSP/member/addMember.jsp");
@@ -151,7 +153,6 @@ public class MemberServlet extends HttpServlet {
 	
 	private void insertMember(HttpServletRequest request, HttpServletResponse response) 
 	 {
-
 		String firstName = request.getParameter("MemberFirstName");
 		String lastName = request.getParameter("MemberLastName");
 		int nationalID = Integer.parseInt( request.getParameter("MemberNationalID") );
@@ -216,6 +217,82 @@ public class MemberServlet extends HttpServlet {
 		}
 	}
 
+	private void updateActivity(HttpServletRequest request, HttpServletResponse response)  {
+
+		int memberID = Integer.parseInt( request.getParameter("memberid") );
+		String firstName = request.getParameter("MemberFirstName");
+		String lastName = request.getParameter("MemberLastName");
+		int nationalID = Integer.parseInt( request.getParameter("MemberNationalID") );
+		int phone = Integer.parseInt( request.getParameter("MemberPhone") );
+		String email = request.getParameter("MemberEmail");
+		String dobString = request.getParameter("MemberDOB");
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		java.util.Date utilDate;
+		try {
+		    utilDate = format.parse(dobString);
+		} catch (Exception e) {
+		    throw new RuntimeException("Invalid date format: " + dobString, e);
+		}
+		java.sql.Date DOB = new java.sql.Date(utilDate.getTime());
+
+		String address = request.getParameter("MemberAddress");
+		
+
+	    Part imagePart = null;
+	    InputStream imageInputStream = null;
+		try {
+			imagePart = request.getPart("imageFile");
+			imageInputStream = imagePart.getInputStream();
+		} catch (IOException | ServletException e2) {
+			e2.printStackTrace();
+		}
+		String[] selectedSkills = request.getParameterValues("skillsNames[]");
+
+		String activityValue = request.getParameter("activityIdDropdown");
+		String[] activityParts = activityValue.split("Option");
+		String activityIdString = activityParts[0];
+		Integer activityId=null;
+		if(!activityIdString.isEmpty())
+		activityId = Integer.parseInt(activityIdString);
+		try {
+			if(imagePart != null && imagePart.getSize() > 0)
+				memberDAO.updateMemberWithImage(memberID,firstName, lastName, nationalID, phone, email, DOB, address, imageInputStream);
+			else
+				memberDAO.updateMemberWithoutImage(memberID,firstName, lastName, nationalID, phone, email, DOB, address);
+			if(activityId != null)
+				memberActivityDAO.addMemberActivity(memberID, activityId);
+			memberSkillDAO.deleteMemberSkills(memberID);
+			if (selectedSkills != null) {
+			    for (String skillId : selectedSkills) {
+			    	Integer skillID = Integer.parseInt(skillId);
+			    	memberSkillDAO.addMemberSkill(memberID, skillID);
+			    }
+			}
+			
+			showData(request, response);
+		}catch (SQLIntegrityConstraintViolationException e) {
+		    try {
+			    String errorMessage = "Activity name already existed !";
+			    request.setAttribute("errorMessage", errorMessage);
+		    	editForm(request, response);
+			} catch (ServletException | IOException | SQLException e1) {
+				e1.printStackTrace();
+			}
+		    
+		} catch (SQLException | ServletException | IOException e) {
+			e.printStackTrace();
+		    
+		    try {
+			    String errorMessage = "An error occurred while performing the operation. Please try again later.";
+			    request.setAttribute("errorMessage", errorMessage);
+		    	editForm(request, response);
+			} catch (ServletException | IOException | SQLException e1) {
+				e1.printStackTrace();
+			}
+		    
+		}
+	}
+	
 	private void deleteMemberActivity(HttpServletRequest request, HttpServletResponse response) {
 		int activityid = Integer.parseInt( request.getParameter("activityid") );
 		int memberid = Integer.parseInt( request.getParameter("memberID") );
@@ -230,7 +307,7 @@ public class MemberServlet extends HttpServlet {
 	private void deleteMember(HttpServletRequest request, HttpServletResponse response) {
 		int memberid = Integer.parseInt( request.getParameter("memberid") );
 		try {
-			activityDAO.deleteActivity(memberid);
+			memberDAO.deleteMember(memberid);
 			showData(request, response);
 		} catch (SQLException | ServletException | IOException e) {
 			e.printStackTrace();

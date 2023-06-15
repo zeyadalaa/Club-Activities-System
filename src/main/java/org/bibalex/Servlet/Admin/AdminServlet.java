@@ -2,6 +2,7 @@ package org.bibalex.Servlet.Admin;
 
 
 import java.io.IOException;
+import java.security.MessageDigest;
 
 import org.bibalex.Configuration.Configuration;
 
@@ -21,6 +22,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * Servlet implementation class Admin
@@ -46,8 +50,7 @@ public class AdminServlet extends HttpServlet {
 		String userName = request.getParameter("username");
 		String password = request.getParameter("password");
 		HttpSession session = null;
-		
-		if(adminUsername.equals(userName) && adminPassword.equals(password)) {
+		if(adminUsername.equals(hashPassword(userName)) && adminPassword.equals(hashPassword(password))) {
 			session = request.getSession();
 			session.setAttribute("loggedIn", true);
 			
@@ -59,6 +62,22 @@ public class AdminServlet extends HttpServlet {
 		}	
 
 	}
+	
+	public static String hashPassword(String password) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hashedBytes = digest.digest(password.getBytes(StandardCharsets.UTF_8));
+
+            StringBuilder stringBuilder = new StringBuilder();
+            for (byte b : hashedBytes) {
+                stringBuilder.append(String.format("%02x", b));
+            }
+            return stringBuilder.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return null; 
+    }
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

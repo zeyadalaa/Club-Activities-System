@@ -18,6 +18,7 @@
             alert(message); // Replace with your preferred pop-up mechanism
         }
         
+        
     </script>
 </head>
 <body>
@@ -76,25 +77,25 @@
 	            <input type="text" name="MemberAddress" id="MemberAddress"  value="${member.address}" required><br><br>
 				
 				<%
-				 List<Activity>selectedActivities = ( List<Activity>) request.getAttribute("selectedActivities");
-					if(member != null && selectedActivities != null){
-				%>
-						<label for="MemberActivity "> Activities enrolled in: </label>
+				 Set<Activity>selectedActivities = ( Set<Activity>) request.getAttribute("selectedActivities");
+				 List<Activity>activities = ( List<Activity>) request.getAttribute("activities");
+				 
+				 if(activities != null){%>
+				<label for="activityIdDropdown ">Activities :</label>
+				 <select class="dropdown" name="activityIdDropdown" id="activityIdDropdown" >
+						        <option></option>
 				<%
-						for (Activity activity : selectedActivities) {
-				%>
-						<div class = "activities">
-	       					<label id="activityLabel" name="activityLabel"><%= activity.getName() %></label>
-							<form action="${pageContext.request.contextPath}/Member" method="POST">
-								  <input type="hidden" name="action" value="deleteMemberActivity">
-								  <input type="hidden" name="activityid" value="<%= activity.getId() %>">
-								  <input type="hidden" name="memberID" value="<%= member.getId() %>">
-			                		<button type="submit" class="deleteButton">Delete</button>
-						  	</form>
-						</div>
-						<%}
-				} %>
-				
+
+					for(int i = 0 ;i<activities.size();i++){
+						if(selectedActivities != null && activities.get(i).getName() != null && !(selectedActivities.contains(activities.get(i).getName())) ){
+	        		%>
+						        <option value="<%=activities.get(i).getId()%>"><%=activities.get(i).getName()%></option>
+			        <%}} %>
+						
+				</select>
+				 <%}%>
+					
+					
 	            
 	            <%
         		   if(member != null && member.getImage() != null){
@@ -133,6 +134,24 @@
 	            <%} %>
 				
 	        </form>
+	        <%
+	        if(member != null && selectedActivities != null){
+				%>
+						<label for="MemberActivity "> Activities enrolled in: </label>
+				<%
+						for (Activity activity : selectedActivities) {
+				%>
+						<div class = "activities">
+							<form action="${pageContext.request.contextPath}/Member" method="POST">
+				                <label id="activityLabel" ><%= activity.getName() %></label>
+								  <input type="hidden" name="action" value="deleteMemberActivity">
+								  <input type="hidden" name="activityid" value="<%= activity.getId() %>">
+								  <input type="hidden" name="memberID" value="<%= member.getId() %>">
+			                		<button type="submit" class="deleteButton">Delete</button>
+	                		</form>
+						</div>
+						<%}
+				} %>
 	    </div>
     </div>
 </body>

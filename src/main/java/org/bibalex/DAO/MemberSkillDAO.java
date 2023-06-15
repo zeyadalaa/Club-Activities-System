@@ -45,5 +45,19 @@ public class MemberSkillDAO {
         connection1.close();
 		return Set;
     }
+
+	public void deleteMemberSkills(int memberID) throws SQLException {
+        ConnectDB connection = new ConnectDB();
+        String STP= "CALL deleteMemberSkills(?)";
+        Connection connection1 =connection.ConnectToDatabase();
+        CallableStatement statement = null;
+        
+    	statement = connection1.prepareCall(STP);    
+        statement.setInt(1, memberID);
+        statement.executeUpdate();
+        
+        statement.close();
+        connection1.close();
+	}
     
 }

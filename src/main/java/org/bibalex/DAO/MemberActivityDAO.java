@@ -5,7 +5,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.bibalex.Models.Activity;
 
@@ -41,12 +43,12 @@ public class MemberActivityDAO {
         connection1.close();
     }
     
-    public List<Activity> getMemberActivityByID(Integer memberID) throws SQLException {
+    public Set<Activity> getMemberActivityByID(Integer memberID) throws SQLException {
         ConnectDB connection = new ConnectDB();
         String STP= "CALL getMemberActivitiesByID(?)";
         Connection connection1 =connection.ConnectToDatabase();
         CallableStatement statement = null;
-        List<Activity> list = new ArrayList<Activity>();
+        Set <Activity> list = new HashSet<Activity>();
         
     	statement = connection1.prepareCall(STP);    
         statement.setInt(1, memberID);

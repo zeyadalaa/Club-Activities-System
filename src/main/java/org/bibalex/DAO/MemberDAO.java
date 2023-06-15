@@ -128,31 +128,52 @@ public class MemberDAO {
         return memberID;
     }
 
-
-    public void updateMember(String firstName,String lastName,Integer nationalID, Integer phone, String email, 
-    		Date date,String address) throws SQLException {
-                    
+    public void updateMemberWithImage(Integer memberID ,String firstName,String lastName,Integer nationalID, Integer phone, String email, 
+    		Date date,String address, InputStream imageInputStream) throws SQLException {
 
         ConnectDB connection = new ConnectDB();
-        String STP= "CALL updateEmployee(?,?,?,?,?,?)";
+        String STP= "CALL updateMemberWithImage(?,?,?,?,?,?,?,?,?)";
         Connection connection1 =connection.ConnectToDatabase();
         CallableStatement statement = null;
 
     	statement = connection1.prepareCall(STP);    
-        statement.setString(1, firstName);
-        statement.setString(2, lastName);
-        statement.setInt(3, nationalID);
-        statement.setInt(4, phone);
-        statement.setString(5, email);
-        statement.setDate(6, date);
-        statement.setString(7, address);
+        statement.setInt(1, memberID);
+        statement.setString(2, firstName);
+        statement.setString(3, lastName);
+        statement.setInt(4, nationalID);
+        statement.setInt(5, phone);
+        statement.setString(6, email);
+        statement.setDate(7, date);
+        statement.setString(8, address);
+        statement.setBlob(9, imageInputStream);
         statement.executeUpdate();
         
         statement.close();
         connection1.close();
     }
 
+    public void updateMemberWithoutImage(Integer memberID ,String firstName,String lastName,Integer nationalID, Integer phone, String email, 
+    		Date date,String address) throws SQLException {
 
+        ConnectDB connection = new ConnectDB();
+        String STP= "CALL updateMemberWithoutImage(?,?,?,?,?,?,?,?)";
+        Connection connection1 =connection.ConnectToDatabase();
+        CallableStatement statement = null;
+
+    	statement = connection1.prepareCall(STP);    
+        statement.setInt(1, memberID);
+        statement.setString(2, firstName);
+        statement.setString(3, lastName);
+        statement.setInt(4, nationalID);
+        statement.setInt(5, phone);
+        statement.setString(6, email);
+        statement.setDate(7, date);
+        statement.setString(8, address);
+        statement.executeUpdate();
+        
+        statement.close();
+        connection1.close();
+    }
     public void deleteMember(int memberId) throws SQLException {
 
         ConnectDB connection = new ConnectDB();

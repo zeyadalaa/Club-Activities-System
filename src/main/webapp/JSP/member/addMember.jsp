@@ -62,16 +62,16 @@
 	            <input type="text" name="MemberLastName" id="MemberLastName"  value="${member.lastName}" required><br>
 	            
 				<label for="MemberNationalID ">National ID:</label>
-	            <input type="number" name="MemberNationalID" id="MemberNationalID"  value="${member.nationalID}" required><br>
+	            <input type="text" name="MemberNationalID" id="MemberNationalID" value="${member.nationalID}" pattern="[0-9]+" required><br>
 	            
 				<label for="MemberPhone ">Phone Number:</label>
-	            <input type="number" name="MemberPhone" id="MemberPhone"  value="${member.phone}" required><br>
-	            
+				<input type="text" name="MemberPhone" id="MemberPhone" value="${member.phone}" pattern="01[0-9]{9}" required><br>
+
 				<label for="MemberEmail ">Email:</label>
 	            <input type="email" name="MemberEmail" id="MemberEmail"  value="${member.email}" required min="1"><br>
 				
 	            <label for="MemberDOB">Date of Birth:</label>
-				<input type="date" name="MemberDOB" id="MemberDOB" value="<%= member.getDOB() != null ? member.getDOB() : formattedDate %>" max="<%= formattedDate %>" required>
+				<input type="date" name="MemberDOB" id="MemberDOB" value="<%= member != null && member.getDOB() != null ? member.getDOB() : formattedDate %>" max="<%= formattedDate %>" required>
 
 				<label for="MemberAddress ">Address:</label>
 	            <input type="text" name="MemberAddress" id="MemberAddress"  value="${member.address}" required><br><br>

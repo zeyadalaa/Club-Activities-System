@@ -98,7 +98,7 @@ public class MemberServlet extends HttpServlet {
 				editForm(request, response);
 				break;
 			case "update":
-				updateActivity(request, response);
+				updateMember(request, response);
 				break;
 			default:
 				showData(request, response);
@@ -227,7 +227,8 @@ public class MemberServlet extends HttpServlet {
 		}
 	}
 
-	private void updateActivity(HttpServletRequest request, HttpServletResponse response)  {
+	
+	private void updateMember(HttpServletRequest request, HttpServletResponse response)  {
 
 		try {
 			int memberID = Integer.parseInt( request.getParameter("memberid") );

@@ -12,7 +12,7 @@
 <head>
   <link rel="stylesheet" href="${pageContext.request.contextPath}/CSS/view.css">
     <meta charset="UTF-8">
-  <title>Master Detail</title>
+  <title>Club</title>
 </head>
 <body>
   <div class="container">
@@ -51,8 +51,9 @@
               <%-- Encode the byte array to Base64 --%>
               <% if (member.getImage() != null) {
                 String encodedImage = Base64.getEncoder().encodeToString(member.getImage());
-                %>
+                %><div class="image-container">
                 <img src="data:image/jpeg;base64, <%= encodedImage %>" alt="User Image" />
+                </div>
               <% } %>
             </td>
             <td><%= member.getFirstName() %></td>

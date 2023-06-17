@@ -38,6 +38,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
+import java.io.File;
+import java.io.FileInputStream;
+
 
 /**
  * Servlet implementation class Member
@@ -45,8 +48,8 @@ import jakarta.servlet.http.Part;
 @WebServlet("/Member")
 @MultipartConfig(
         fileSizeThreshold = 1024 * 10,  // 10 KB
-        maxFileSize = 1024 * 300,       // 300 KB
-        maxRequestSize = 1024 * 1024    // 1 MB 
+        maxFileSize = 1024 * 1024 * 10,       // 10 MB
+        maxRequestSize = 1024 * 1024 * 10    // 10 MB 
 )
 public class MemberServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -171,7 +174,7 @@ public class MemberServlet extends HttpServlet {
 		String address = request.getParameter("MemberAddress");
 		
 
-	    Part imagePart;
+	    Part imagePart = null;
 	    InputStream imageInputStream = null;
 		try {
 			imagePart = request.getPart("imageFile");
@@ -183,8 +186,15 @@ public class MemberServlet extends HttpServlet {
 		
 		String[] selectedSkills = request.getParameterValues("skillsNames[]");
 		try {
+			if(imagePart == null || !(imagePart.getSize() > 0)) {
+			    // Use a default image when no image is provided
+			    imageInputStream = new FileInputStream("C:\\Users\\zeyad\\Desktop\\default.jpg");
+				System.out.println("-----------------------------------------------------------");
+			}
+			System.out.println("+++++++++++++++++++++++++++++++");
+			
 			Integer memberID = memberDAO.addMember(firstName, lastName, nationalID, phone, email, DOB, address,imageInputStream);
-		
+
 			if (selectedSkills != null) {
 			    for (String skillId : selectedSkills) {
 			    	Integer skillID = Integer.parseInt(skillId);
@@ -206,7 +216,7 @@ public class MemberServlet extends HttpServlet {
 		   try {
 			    String errorMessage = "An error occurred while performing the operation. Please try again later.";
 			    request.setAttribute("errorMessage", errorMessage);
-				showData(request, response);
+ 				showData(request, response);
 			} catch (ServletException | IOException e1) {
 				e1.printStackTrace();
 			}
@@ -219,48 +229,38 @@ public class MemberServlet extends HttpServlet {
 
 	private void updateActivity(HttpServletRequest request, HttpServletResponse response)  {
 
-		int memberID = Integer.parseInt( request.getParameter("memberid") );
-		String firstName = request.getParameter("MemberFirstName");
-		String lastName = request.getParameter("MemberLastName");
-		int nationalID = Integer.parseInt( request.getParameter("MemberNationalID") );
-		int phone = Integer.parseInt( request.getParameter("MemberPhone") );
-		String email = request.getParameter("MemberEmail");
-		String dobString = request.getParameter("MemberDOB");
-		DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-		java.util.Date utilDate;
 		try {
+			int memberID = Integer.parseInt( request.getParameter("memberid") );
+			String firstName = request.getParameter("MemberFirstName");
+			String lastName = request.getParameter("MemberLastName");
+			int nationalID = Integer.parseInt( request.getParameter("MemberNationalID") );
+			int phone = Integer.parseInt( request.getParameter("MemberPhone") );
+			String email = request.getParameter("MemberEmail");
+			String dobString = request.getParameter("MemberDOB");
+			DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			java.util.Date utilDate;
 		    utilDate = format.parse(dobString);
-		} catch (Exception e) {
-		    throw new RuntimeException("Invalid date format: " + dobString, e);
-		}
-		java.sql.Date DOB = new java.sql.Date(utilDate.getTime());
-
-		String address = request.getParameter("MemberAddress");
-		
-
-	    Part imagePart = null;
-	    InputStream imageInputStream = null;
-		try {
+			java.sql.Date DOB = new java.sql.Date(utilDate.getTime());
+			String address = request.getParameter("MemberAddress");
+			
+		    Part imagePart = null;
+		    InputStream imageInputStream = null;
 			imagePart = request.getPart("imageFile");
 			imageInputStream = imagePart.getInputStream();
-		} catch (IOException | ServletException e2) {
-			e2.printStackTrace();
-		}
-		String[] selectedSkills = request.getParameterValues("skillsNames[]");
-
-		String activityValue = request.getParameter("activityIdDropdown");
-		String[] activityParts = activityValue.split("Option");
-		String activityIdString = activityParts[0];
-		Integer activityId=null;
-		if(!activityIdString.isEmpty())
-		activityId = Integer.parseInt(activityIdString);
-		try {
+			String[] selectedSkills = request.getParameterValues("skillsNames[]");
+	
+			String activityValue = request.getParameter("activityIdDropdown");
+			String[] activityParts = activityValue.split("Option");
+			String activityIdString = activityParts[0];
+			Integer activityId=null;
+			
+			if(!activityIdString.isEmpty())
+				activityId = Integer.parseInt(activityIdString);
 			if(imagePart != null && imagePart.getSize() > 0)
 				memberDAO.updateMemberWithImage(memberID,firstName, lastName, nationalID, phone, email, DOB, address, imageInputStream);
 			else
 				memberDAO.updateMemberWithoutImage(memberID,firstName, lastName, nationalID, phone, email, DOB, address);
-			if(activityId != null)
-				memberActivityDAO.addMemberActivity(memberID, activityId);
+	
 			memberSkillDAO.deleteMemberSkills(memberID);
 			if (selectedSkills != null) {
 			    for (String skillId : selectedSkills) {
@@ -268,7 +268,8 @@ public class MemberServlet extends HttpServlet {
 			    	memberSkillDAO.addMemberSkill(memberID, skillID);
 			    }
 			}
-			
+			if(activityId != null)
+				memberActivityDAO.addMemberActivity(memberID, activityId);
 			showData(request, response);
 		}catch (SQLIntegrityConstraintViolationException e) {
 		    try {
@@ -279,17 +280,29 @@ public class MemberServlet extends HttpServlet {
 				e1.printStackTrace();
 			}
 		    
-		} catch (SQLException | ServletException | IOException e) {
-			e.printStackTrace();
+		} catch (SQLException e) {
+	    	String errorMessage;
 		    
 		    try {
-			    String errorMessage = "An error occurred while performing the operation. Please try again later.";
+		    	if (e.getSQLState().equals("45000")) {
+		    		errorMessage = e.getMessage();
+	    		}else
+	            	errorMessage = "An error occurred while performing the operation. Please try again later.";
 			    request.setAttribute("errorMessage", errorMessage);
 		    	editForm(request, response);
 			} catch (ServletException | IOException | SQLException e1) {
 				e1.printStackTrace();
 			}
-		    
+		}catch ( ServletException | IOException  e) {
+			try {
+	        	String errorMessage = "An error occurred while performing the operation. Please try again later.";
+			    request.setAttribute("errorMessage", errorMessage);
+				editForm(request, response);
+			} catch (SQLException | ServletException | IOException e1) {
+				e1.printStackTrace();
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
 		}
 	}
 	

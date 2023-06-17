@@ -13,7 +13,7 @@
 <head>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/CSS/view.css">
     <meta charset="UTF-8">
-<title>Master Detail</title>
+  <title>Club</title>
 </head>
 <body>
     <div class="container">

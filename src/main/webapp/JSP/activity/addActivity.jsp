@@ -10,7 +10,7 @@
 <head>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/CSS/addPages.css">
     <meta charset="UTF-8">
-    <title>Add Section</title>
+    <title>Add Activity</title>
     <script>
         function showError(message) {
             alert(message); // Replace with your preferred pop-up mechanism
@@ -55,7 +55,7 @@
 				
 				<label for="Activity ">Minimum Age:</label>
 	            <input type="number" name="ActivityMinimumAge" id="ActivityMinimumAge"  value="${activity.minAge}" required min="1" 
-	            onchange="document.getElementById('ActivityMaximumAge').min=parseInt(this.value)+1;"
+	            onchange="document.getElementById('ActivityMaximumAge').min=parseInt(this.value);"
 	            ><br>
 				
 				<label for="Activity ">Maximum Age:</label>

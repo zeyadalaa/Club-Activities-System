@@ -84,3 +84,16 @@ button:hover {
 .action-buttons button {
     margin-right: 5px;
 }
+img{
+	width: 100%; 
+	height: auto;
+ 	object-fit: cover;
+ 	align-items: center;
+}
+.image-container img{
+ 	align-items: center;
+	width: 70px; 
+	height: 70px;
+	 border-radius: 50%; 
+	overflow: hidden;
+}

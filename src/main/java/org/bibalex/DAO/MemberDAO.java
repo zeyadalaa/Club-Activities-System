@@ -28,8 +28,8 @@ public class MemberDAO {
     public List<Member> getMembers() throws SQLException {
 		List<Member> member = new ArrayList<>();
 		Map<Integer, Member> hashMap = new HashMap<Integer, Member>();
-		Set<String> setSkill = new HashSet<String>();
-		Set<String> setActivity = new HashSet<String>();
+		Set<String> setSkill = null;
+		Set<String> setActivity =  null;
 	
 	    ConnectDB connection = new ConnectDB();
 	    String STP= "CALL getMembers()";
@@ -78,8 +78,9 @@ public class MemberDAO {
 	        else {
 	        	if(imageBlob != null)
 	        		imageData = imageBlob.getBytes(1,(int) imageBlob.length());
-
+	        	setSkill = new HashSet<String>();
 		        Skill skill = new Skill(skillId,skillName);
+		        setActivity = new HashSet<String>();
 		        Activity activity = new Activity(activityId, activityName,activityDescription,activityMinAge,activityMaxAge);
 		        Member newMember = new Member(memberId, memberNationalId,memberPhone, memberFirst_Name,
 		        		memberLast_name, imageData, memberAddress, memberDOB, memberEmail);

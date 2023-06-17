@@ -7,7 +7,7 @@
 <head>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/CSS/addPages.css">
     <meta charset="UTF-8">
-    <title>Add Section</title>
+    <title>Add Skill</title>
     <script>
         function showError(message) {
             alert(message); // Replace with your preferred pop-up mechanism

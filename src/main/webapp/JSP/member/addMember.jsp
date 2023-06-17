@@ -12,7 +12,7 @@
 <head>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/CSS/addPages.css">
     <meta charset="UTF-8">
-    <title>Add Section</title>
+    <title>Add Member</title>
     <script>
         function showError(message) {
             alert(message); // Replace with your preferred pop-up mechanism
@@ -71,8 +71,8 @@
 	            <input type="email" name="MemberEmail" id="MemberEmail"  value="${member.email}" required min="1"><br>
 				
 	            <label for="MemberDOB">Date of Birth:</label>
-				<input type="date" name="MemberDOB" id="MemberDOB" value="<%= formattedDate %>" max="<%= formattedDate %>" required><br>
-				
+				<input type="date" name="MemberDOB" id="MemberDOB" value="<%= member.getDOB() != null ? member.getDOB() : formattedDate %>" max="<%= formattedDate %>" required>
+
 				<label for="MemberAddress ">Address:</label>
 	            <input type="text" name="MemberAddress" id="MemberAddress"  value="${member.address}" required><br><br>
 				
@@ -104,7 +104,6 @@
 				<br>
 				<label for="imageFile ">Upload Image:</label>
 				
-	            	<img src="data:image/jpeg;base64, <%= encodedImage %>" alt="User Image" />
 			    <%}else %>
 			    	<input type="file" name="imageFile" accept="image/*">
 				<label>Select skills needed:</label>

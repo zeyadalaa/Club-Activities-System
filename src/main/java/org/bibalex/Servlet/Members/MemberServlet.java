@@ -188,10 +188,8 @@ public class MemberServlet extends HttpServlet {
 		try {
 			if(imagePart == null || !(imagePart.getSize() > 0)) {
 			    // Use a default image when no image is provided
-			    imageInputStream = new FileInputStream("C:\\Users\\zeyad\\Desktop\\default.jpg");
-				System.out.println("-----------------------------------------------------------");
+			    imageInputStream = new FileInputStream("D:\\Users\\zeyad.alaa\\Desktop\\default.jpg");
 			}
-			System.out.println("+++++++++++++++++++++++++++++++");
 			
 			Integer memberID = memberDAO.addMember(firstName, lastName, nationalID, phone, email, DOB, address,imageInputStream);
 

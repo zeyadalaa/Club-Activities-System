@@ -65,8 +65,8 @@
 	            <input type="text" name="MemberNationalID" id="MemberNationalID" value="${member.nationalID}" pattern="[0-9]+" required><br>
 	            
 				<label for="MemberPhone ">Phone Number:</label>
-				<input type="text" name="MemberPhone" id="MemberPhone" value="${member.phone}" pattern="01[0-9]{9}" required><br>
-
+				<input type="text" name="MemberPhone" id="MemberPhone" value="<%= member != null ? "0" + member.getPhone(): "" %>" pattern="01[0-9]{9}" required><br>
+				
 				<label for="MemberEmail ">Email:</label>
 	            <input type="email" name="MemberEmail" id="MemberEmail"  value="${member.email}" required min="1"><br>
 				

@@ -59,7 +59,7 @@
             <td><%= member.getFirstName() %></td>
             <td><%= member.getLastName() %></td>
             <td><%= member.getNationalID() %></td>
-            <td><%= member.getPhone() %></td>
+            <td>0<%= member.getPhone() %></td>
             <td><%= member.getEmail() %></td>
             <td><%= member.getDOB() %></td>
             <td><%= member.getAddress() %></td>
